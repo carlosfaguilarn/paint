@@ -61,6 +61,7 @@ function seleccionarFigura(type) {
 }
 function arrastrar(){
     mode = "arrastrando";
+    document.getElementById("canvas").style.cursor = "default";
     isDragging = false;
     isPaiting = false;
     habilitarLapiz = false;
@@ -153,22 +154,31 @@ function mouseDown(evt){
     else if(mode == "dibujando") isPaiting = true;
     
     if(isDragging) {
-        for (var i = 0; i < poligonosRy.length; i++) {
+        for (var i = 0; i < historial.length; i++) {
             //dibujarUnPoligono(X,Y,R,L,paso,color)
-            dibujarUnPoligono(poligonosRy[i].X, poligonosRy[i].Y, poligonosRy[i].R, poligonosRy[i].L, poligonosRy[i].paso, poligonosRy[i].color);
-            
+            //dibujarUnPoligono(poligonosRy[i].X, poligonosRy[i].Y, poligonosRy[i].R, poligonosRy[i].L, poligonosRy[i].paso, poligonosRy[i].color);
+            Circulo(historial[i].x1, historial[i].y1, historial[i].x2, historial[i].y2);
+
             if (ctx.isPointInPath(mousePos.x, mousePos.y)) {
-                poligonosRy[i].bool = true;
-                delta.x = poligonosRy[i].X - mousePos.x;
-                delta.y = poligonosRy[i].Y - mousePos.y;
+                //poligonosRy[i].bool = true;
+                //delta.x = poligonosRy[i].X - mousePos.x;
+                //delta.y = poligonosRy[i].Y - mousePos.y;
+                historial[i].bool = true; 
+                delta.x1 = historial[i].x1 - mousePos.x;
+                delta.y1 = historial[i].y1 - mousePos.y;
+
+                delta.x2 = historial[i].x2 - mousePos.x;
+                delta.y2 = historial[i].y2 - mousePos.y; 
                 break;
             } else {
-                poligonosRy[i].bool = false;
+                //poligonosRy[i].bool = false;
+                historial[i].bool = false;
             }
         }
     
-        ctx.clearRect(0, 0, c.width, c.height);
-        dibujarPoligonos();
+        //ctx.clearRect(0, 0, c.width, c.height);
+        //dibujarPoligonos();
+        restartCanvas(ptr, historial);
     }else if(isPaiting){
         temp_x[0] = mousePos.x;
         temp_y[0] = mousePos.y;      
@@ -187,14 +197,15 @@ function mouseUp() {
             'y1': temp_y[0],
             'x2': temp_x[1],
             'y2': temp_y[1],
-            'color': color
+            'color': color,
+            'bool': false
         }; 
         ptr++;     
         console.log(historial);
     }
     ctx.clearRect(0, 0, c.width, c.height); 
     restartCanvas(ptr, historial);
-    dibujarPoligonos();
+    //dibujarPoligonos();
     
     isDragging = false;
     isPaiting = false;
@@ -203,19 +214,31 @@ function mouseUp() {
 function mouseMove(evt) {
     var mousePos = oMousePos(c, evt);
     if(isDragging) {
-        for (var i = 0; i < poligonosRy.length; i++) {
-          if (poligonosRy[i].bool) {
+        for (var i = 0; i < historial.length; i++) {
+          if (historial[i].bool) {
             ctx.clearRect(0, 0, c.width, c.height);
-            X = mousePos.x + delta.x, Y = mousePos.y + delta.y
-            poligonosRy[i].X = X;
-            poligonosRy[i].Y = Y;
+            X1 = mousePos.x + delta.x1; 
+            Y1 = mousePos.y + delta.y1;
+
+            X2 = mousePos.x + delta.x2; 
+            Y2 = mousePos.y + delta.y2;
+            
+            //poligonosRy[i].X = X;
+            //poligonosRy[i].Y = Y;
+            historial[i].x1 = X1;
+            historial[i].y1 = Y1;
+
+            historial[i].x2 = X2;
+            historial[i].y2 = Y2;
+
             break;
           }
         }
-        dibujarPoligonos();
+        //dibujarPoligonos();
+        restartCanvas(ptr, historial);
     }else if(isPaiting){
         restartCanvas(ptr, historial);
-        dibujarPoligonos();
+        //dibujarPoligonos();
         temp_x[1] = mousePos.x;
         temp_y[1] = mousePos.y;
         switch(tipoFigura){

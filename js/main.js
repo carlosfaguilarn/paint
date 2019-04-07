@@ -13,7 +13,7 @@ window.onload = function() {
     mouse = 0;
 
     console.log(poligonosRy);
-    dibujarPoligonos();
+    //dibujarPoligonos();
 }
 
 function drawCartesianPoint(ctx, x, y) {
