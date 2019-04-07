@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <title>Paint Photoshop</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/file-input.css">
+    <link rel="shortcut icon" href="img/icono.png" />
+    <script src="js/externo.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/metodos.js"></script>
+    <script src="js/pintura.js"></script>
+    <script src="js/archivo.js"></script>
+    <script src="js/acciones.js"></script>
+    <script src="js/figuras.js"></script>
+    <script src="js/seleccion.js"></script>
+    <!--************************************** BOOTSTRAP ****************************************************-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <!-- bootstrap -->
+
+</head>
+<body> 
+    <div class="herramientas">
+        <div class="pintar seccion">
+            <div class="cont">
+                <a onclick="lapiz();">   <img src="img/lapiz-con-goma.png" /></a>
+                <a onclick="borrador();"><img src="img/goma.png" /></a>
+                <a onclick="arrastrar();"><img src="img/arrow.png" /></a>
+            </div>
+            <div class="pie"> Pintar </div> 
+        </div>
+        <div class="tamaño seccion"> 
+            <div class="cont">
+                <input type="range" name="edad" min="0" max="500" step="1" value="10" onchange="rango(value);">
+                <input type="number" min="0" max="500"  value="10" id="size"/>
+            </div>
+
+            <div class="pie">Tamaño</div>
+        </div> 
+        <div class="figuras seccion">
+            <div class="cont">
+                <div class="shapes">
+                    <a onclick="seleccionarFigura('linea');">    <img src="img/linea.png"    /></a>
+                    <a onclick="seleccionarFigura('circulo');">  <img src="img/circulo.png"  /></a>
+                    <a onclick="seleccionarFigura('eclipse');">  <img src="img/eclipse.png"  /></a>
+                    <a onclick="seleccionarFigura('poligono');"> <img src="img/poligono.png" /></a>
+                </div>
+                <div class="skins">
+                    <a class="float-left" onclick="rotarFigura('derecha');"> <img src="img/rotar-derecha.png" /></a>
+                    <a class="float-right" onclick="rotarFigura('izqueirda');"> <img src="img/rotar-izquierda.png" /></a> 
+                </div> 
+            </div>
+            <div class="pie">Figuras</div>
+        </div> 
+        <div class="colors seccion">
+            <div class="cont">
+                    <a onclick="changeColor('red');"><img src="img/colores/rojo.png" alt="" srcset=""></a>
+                    <a onclick="changeColor('blue');"><img src="img/colores/azul.png" alt="" srcset=""></a>
+                    <a onclick="changeColor('yellow');"><img src="img/colores/amarillo.png" alt="" srcset=""></a> 
+                    <a onclick="changeColor('orange');"><img src="img/colores/naranja.png" alt="" srcset=""></a>
+                    <a onclick="changeColor('green');"><img src="img/colores/verde.png" alt="" srcset=""></a>
+                    <a onclick="changeColor('rgb(243, 38, 157)');"><img src="img/colores/rosa.jpg" alt="" srcset=""></a> 
+                    <a onclick="changeColor('cyan');"><img src="img/colores/cyan.png" alt="" srcset=""></a>
+                    <a onclick="changeColor('purple');"><img src="img/colores/purpura.png" alt="" srcset=""></a>
+                    <a onclick="changeColor('black');"><img src="img/colores/negro.png" alt="" srcset=""></a> 
+                    <a onclick="changeColor('white');"><img src="img/colores/blanco.png" alt="" srcset=""></a> 
+
+                <input type="color" id="colores" onchange="scolor();" title="Mostrar color picker"/>
+            </div> 
+            <div class="pie">Colores</div>
+        </div>
+        <div class="guardar seccion">
+            <div class="cont">  
+                <div class="btnguardar">
+                    <a  type="button" download="canvas.png" id="guardarPPS" >
+                        <i class="fas fa-file-download"></i> Guardar PPS 
+                    </a>
+                </div> 
+                <div class ="btnguardar">
+                    <a  type="button" download="canvas.png" id="guardarPNG" >
+                        <i class="fas fa-save icon-save"></i> Guardar PNG
+                    </a>
+                </div> 
+            </div> 
+            <div class="pie"> Archivo</div>
+        </div> 
+        <div class="seccion">
+            <div class="cont"> 
+                <input type="file" name="file-5" id="file-5" class="inputfile inputfile-5" onchange="filesInfo()" data-multiple-caption="{count} archivos seleccionados" multiple />
+                <label for="file-5">
+                <figure>
+                <svg xmlns="http://www.w3.org/2000/svg" class="iborrainputfile" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"></path></svg>
+                </figure>
+                <span class="iborrainputfile">Abrir</span>
+                </label>
+            </div> 
+        </div>
+    </div>
+    
+    <center>  
+        <div class="canvas">
+            <canvas width="1200" height="500" id="canvas"  onmousedown="mouseDown(event);" onmousemove="mouseMove(event);" onmouseup="mouseUp();" onmouseout="mouseUp();"></canvas></td> 
+        </div> 
+    </center> 
+
+    <script src="js/custom-file-input.js"></script>
+</body>
+</html>

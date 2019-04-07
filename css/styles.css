@@ -1,0 +1,99 @@
+
+.herramientas {
+    width: 100%;
+    height: 120px;
+    background: rgb(248, 246, 246); 
+
+    display: inherit;
+    
+    -webkit-box-shadow: 0px 3px 14px -6px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 3px 14px -6px rgba(0,0,0,0.75);
+    box-shadow: 0px 3px 14px -6px rgba(0,0,0,0.75);
+} 
+.cont{ 
+    height: 50px;
+    width: 130px; 
+    display: inherit;
+}
+.pie{   
+    height: 60px;
+    width: 130px;
+    display: table-cell;
+    vertical-align: bottom; 
+    text-align: center;
+} 
+.seccion{
+    width: 130px;
+    height: 60px; 
+    border-right: 1px solid rgb(210, 217, 231);
+    float: left; 	
+    padding: 10px;
+}  
+.shapes{
+    border-bottom: 1px solid rgb(210, 217, 231);
+}
+.skins{
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+.float-left {
+    float: left;
+}
+.float-right{
+    float: right;
+}
+.pintar a {
+    cursor: pointer;
+}
+.pintar a:hover{
+    -webkit-box-shadow: 0px 3px 14px -6px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 3px 14px -6px rgba(0,0,0,0.75);
+    box-shadow: 0px 3px 14px -6px rgba(0,0,0,0.75);
+}
+
+input[type="text"]{ 
+    width: 125px;
+}
+
+canvas { 
+    cursor : url('img/lapiz-con-goma.png'), default;
+    background-color: white;
+    margin-top: 10px;
+
+    -webkit-box-shadow: 10px 10px 13px -5px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 13px -5px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 13px -5px rgba(0,0,0,0.75);
+} 
+
+body{
+    background-color: rgb(190, 216, 216); 
+    margin: 0;
+}
+.herramientas a, input, button{
+    cursor: pointer;
+}
+.btnguardar{
+    background-color: white;
+    font-style: italic;
+    font-size: 15px;
+    border: blue 2px solid;
+    border-radius: 5px;
+    width: auto;
+    height: auto;
+    margin-bottom: 5px;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px; 
+    text-decoration: none;
+}
+.icon-save{
+    font-size: 20px;
+    float: left;
+    vertical-align: center; 
+}
+
+input[type=”file”]#files {
+    color: transparent; 
+} 
