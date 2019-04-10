@@ -15,6 +15,9 @@
     width: 130px; 
     display: inherit;
 }
+.files{
+    width: 80px !important;
+}
 .pie{   
     height: 60px;
     width: 130px;
@@ -29,6 +32,9 @@
     float: left; 	
     padding: 10px;
 }  
+#lados{
+    font-size: 15px; 
+}
 .shapes{
     border-bottom: 1px solid rgb(210, 217, 231);
 }
@@ -45,12 +51,7 @@
 }
 .pintar a {
     cursor: pointer;
-}
-.pintar a:hover{
-    -webkit-box-shadow: 0px 3px 14px -6px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 3px 14px -6px rgba(0,0,0,0.75);
-    box-shadow: 0px 3px 14px -6px rgba(0,0,0,0.75);
-}
+} 
 
 input[type="text"]{ 
     width: 125px;

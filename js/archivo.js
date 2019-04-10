@@ -2,19 +2,30 @@ var MAX_BYTES = 102400; // 100 KB
 
 // Método para guardar el canvas en formato PNG
 function guardarPNG(){
-    var canvas = document.getElementById("canvas");
-    var imagen = canvas.toDataURL("image/png");
-    this.href = imagen;
+    var elem = document.getElementById('guardarPNG');
+    var nombre = prompt("Nombre del archivo: ");
+    if(nombre != null){
+        elem.download = nombre + ".png";
+        var canvas = document.getElementById("canvas");
+        var imagen = canvas.toDataURL("image/png");
+        this.href = imagen;
+    }else{
+        alert("Ingresa un nombre válido");
+    }
+    
 }
-
 //Método para guardar el canvas en formato JSON
 function guardarPPS(){
     var contenidoDeArchivo = JSON.stringify(historial);
     var elem = document.getElementById('guardarPPS');
-
-    elem.download = "archivo.txt";
-    elem.href = "data:application/octet-stream," 
-                        + encodeURIComponent(contenidoDeArchivo);
+    var nombre = prompt("Nombre del archivo: ");
+    if(nombre != null){
+        elem.download = nombre + ".txt";
+        elem.href = "data:application/octet-stream," + encodeURIComponent(contenidoDeArchivo);
+    }else{
+        alert("Ingresa un nombre válido");
+    }
+    
 }
 
 // Método par leer un archivo JSON
