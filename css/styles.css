@@ -12,9 +12,9 @@
 } 
 .cont{ 
     height: 50px;
-    width: 130px; 
+    width: 140px; 
     display: inherit;
-}
+} 
 .files{
     width: 80px !important;
 }
@@ -26,7 +26,14 @@
     text-align: center;
 } 
 .seccion{
-    width: 130px;
+    width: 140px;
+    height: 60px; 
+    border-right: 1px solid rgb(210, 217, 231);
+    float: left; 	
+    padding: 10px;
+}  
+.figuras{
+    width: 300px;
     height: 60px; 
     border-right: 1px solid rgb(210, 217, 231);
     float: left; 	
@@ -38,10 +45,13 @@
 .shapes{
     border-bottom: 1px solid rgb(210, 217, 231);
 }
+.color-input{
+    width: 15px;
+    height: 20px; 
+    margin-bottom: 10px;
+}
 .skins{
-    padding-top: 10px;
-    padding-right: 20px;
-    padding-left: 20px;
+    padding-top: 10px; 
 }
 .float-left {
     float: left;
@@ -98,3 +108,7 @@ body{
 input[type=”file”]#files {
     color: transparent; 
 } 
+.flat-icon{
+    height: 30px;
+    width: 30px; 
+}

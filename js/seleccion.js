@@ -2,7 +2,6 @@ var canvas = document.getElementById('canvas');
 if (canvas && canvas.getContext) {
   var ctx = canvas.getContext('2d');
   if (ctx) {
-    ctx.globalAlpha = 0.95;
     var isDragging = false;
     var delta = new Object();
 

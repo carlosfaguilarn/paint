@@ -6,9 +6,18 @@ function Circulo(element){
     ctx.beginPath();
     ctx.arc(element.x1, element.y1, r, 0, 2 * Math.PI);
     
-    ctx.fillStyle = element.color;
+    ctx.lineWidth = element.tamano;
+    ctx.fillStyle = element.colorRelleno;
+    ctx.strokeStyle = element.colorContorno;
+
+    if(element.front) ctx.globalCompositeOperation = "source-over";
+    else ctx.globalCompositeOperation = "destination-over";
+    
+    //ctx.fill();
+    ctx.stroke();
+    
     if(element.fill) ctx.fill();
-    else ctx.stroke();
+    
 }
 function Eclipse(element){
     //Eclipse(element.x1, element.y1, element.x2, element.y2, element.rotacion, 0, 2*Math.PI, true); break;
@@ -18,11 +27,26 @@ function Eclipse(element){
     ctx.save();
     ctx.beginPath(); 
     ctx.ellipse(element.x1, element.y1, rx, ry, element.rotacion/100*Math.PI/2, 0, 2*Math.PI, true);   
-    
-    ctx.fillStyle = element.color;
+
+    ctx.lineWidth = element.tamano;
+    ctx.fillStyle = element.colorRelleno;
+    ctx.strokeStyle = element.colorContorno;
+    ctx.stroke();
     if(element.fill) ctx.fill();
-    else ctx.stroke();
+
 } 
+function Linea(element){
+    ctx.beginPath();
+    ctx.moveTo(element.x1, element.y1);
+    
+    ctx.lineWidth = element.tamano; 
+    ctx.strokeStyle = element.colorContorno;
+    if(element.front) ctx.globalCompositeOperation = "source-over";
+     
+    ctx.lineTo(element.x2, element.y2);
+    ctx.stroke();
+    
+}
 //function PoligonoRegular(x1, y1, x2, y2, lados, paso, color, fill) {
 function PoligonoRegular(element) {
     var L = element.lados;
@@ -30,8 +54,9 @@ function PoligonoRegular(element) {
 
     var beta = L / 1;
     var rad = (2 * Math.PI) / beta;
-    ctx.fillStyle = element.color;
-    ctx.strokeStyle = element.color;
+    ctx.lineWidth = element.tamano;
+    ctx.fillStyle = element.colorRelleno;
+    ctx.strokeStyle = element.colorContorno;
     ctx.beginPath();
     for (var i = 0; i < L; i++) {
       x = element.x1 + R * Math.cos(rad * i);
@@ -65,7 +90,7 @@ function PoligonoRegular(element) {
     if(element.fill) ctx.fill();
     else ctx.stroke(); */
 }
-function Lapiz(element){ 
+function Lapiz(element){  
     ctx.lineTo(element.x1, element.y1);
     ctx.stroke();
 }
@@ -82,21 +107,14 @@ function puntoMedioRecta(x1, y1, x2, y2){
 function pintarFigura(element){
     switch(element.tipo){
         case 'circulo': Circulo(element); break;
-        case 'linea':   linea(element.x1, element.y1, element.x2, element.y2); break;
+        case 'linea':   Linea(element); break;
         case 'eclipse': Eclipse(element); break;
         case 'poligonoRegular': PoligonoRegular(element); break;
-        //case 'poligonoRegular': PoligonoRegular(element.x1, element.y1, element.x2, element.y2, element.lados, 1, element.color, element.fill); break;
         case 'lapiz':   Lapiz(element);
     } 
 }
 /*************      CÓDIGO DE SELECCIÓN DE FIGURAS     ************/
-function oMousePos(canvas, evt) {
-    var rect = canvas.getBoundingClientRect();
-    return { // devuelve un objeto
-      x: Math.round(evt.clientX - rect.left),
-      y: Math.round(evt.clientY - rect.top)
-    };
-}
+
 var poligonosRy = [
     {'X':250, 'Y':250,'R':85, 'L':3, 'paso':1, 'color':'#4CD964', 'bool':false},
     {'X':110, 'Y':100,'R':70, 'L':5, 'paso':1, 'color':'#FF9500', 'bool':false},
@@ -111,13 +129,12 @@ function dibujarPoligonos() {
     }
 }
 function rotarFigura(direccion){
-    for (var i = 0; i < historial.length; i++) {
-        if (historial[i].move) {
-            if(direccion == 'derecha')
-                historial[i].rotacion += 1;
-            else if(direccion == 'izquierda')
-                historial[i].rotacion -= 1;
-        }
-    } 
+    console.log(direccion);
+
+    if(direccion == 'derecha')
+        historial[moviendo].rotacion += 1;
+    else if(direccion == 'izquierda')
+        historial[moviendo].rotacion -= 1;
+
     restartCanvas(ptr, historial);
 }

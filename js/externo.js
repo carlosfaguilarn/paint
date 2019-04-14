@@ -12,19 +12,21 @@ var isEscalating = false;
 var isDraw = false;
 var isFill = false;
 
+var toFront = false;
+var toBack = false;
+
+var isSendingFrontBack = false;
 
 var mode = 'none'; 
 var delta = new Object();  
-/* 
-var cw = c.width,  cx = cw / 2;
-var ch = c.height, cy = ch / 2;
-
+var moviendo = 0;
+/*
+variables para el trazado a mano alzada 
+*/
 var dibujar = false;
-var factorDeAlisamiento = 5;
-var Trazados = [];
-var puntos = [];
-ctx.lineJoin = "round";*/
-
+  var factorDeAlisamiento = 5;
+  var Trazados = [];
+  var puntos = [];
 
 
 //
@@ -53,7 +55,6 @@ function keyPress(e) {
     }
 }
 
-
 function restartCanvas(_ptr, _historial){
     var cnv = document.getElementById('canvas');
     var ctx = cnv.getContext('2d'); // gets reference to canvas context  
@@ -63,6 +64,7 @@ function restartCanvas(_ptr, _historial){
         const element = _historial[i]; 
         pintarFigura(element);
     } 
+    redibujarTrazados();
 }
 function getMousePos(canvas, evt) {
     return {
@@ -83,63 +85,89 @@ function mouseDown(evt){
     } 
     
     if(isDragging || isEscalating || isFill) {
+        var pintoSobreCanvas = true;
+        moviendo = 0;
+        var escalando = 0;
+        var pintando = 0;
         for (var i = 0; i < historial.length; i++) {
             pintarFigura(historial[i]);
+            if(ctx.isPointInPath(mousePos.x-83, mousePos.y-130)) {
+                //Seleccionar el actual para tomar al último
+                if(isDragging) moviendo = i; 
+                if(isEscalating) escalando = i;
+                if(isFill) pintando = i;
+                pintoSobreCanvas = false;
 
-            if (ctx.isPointInPath(mousePos.x, mousePos.y)) {
-                if(isDragging)   historial[i].move = true;
-                if(isEscalating) historial[i].scale = true;
-                if(isFill){
-                    historial[i].fill = true;
-                    historial[i].color = color;
+                if(isSendingFrontBack){
+                    historial[i].front = toFront;
+                    isSendingFrontBack = false;
                 }
-
-                delta.x1 = historial[i] .x1 - mousePos.x;
-                delta.y1 = historial[i].y1 - mousePos.y;
-
-                delta.x2 = historial[i].x2 - mousePos.x;
-                delta.y2 = historial[i].y2 - mousePos.y; 
-                break;
-            } else {
+                console.log("Detecté una figura");
+                //break;
+            }else{
                 historial[i].move = false;
                 historial[i].scale = false;
             }
+        }
+        if(isDragging)   historial[moviendo].move = true;
+        if(isEscalating) historial[escalando].scale = true;
+        if(isFill){
+            historial[pintando].fill = true;
+            historial[pintando].colorContorno = colorC;
+            historial[pintando].colorRelleno  = colorR;
+        }  
+
+        delta.x1 = historial[moviendo] .x1 - mousePos.x;
+        delta.y1 = historial[moviendo].y1 - mousePos.y;
+
+        delta.x2 = historial[moviendo].x2 - mousePos.x;
+        delta.y2 = historial[moviendo].y2 - mousePos.y; 
+            // Si no pintó sobre figura (pintó el fondo) y entró al ciclo
+        if(pintoSobreCanvas && isFill){ 
+            c.style.backgroundColor = colorR;
+            console.log("Pintando fondo");
+            console.log("pinto sobre canvas: " + pintoSobreCanvas);
+            console.log("is Fill: " + isFill);
         }
         restartCanvas(ptr, historial);
     }else if(isPaiting){
         temp_x[0] = mousePos.x;
         temp_y[0] = mousePos.y;      
     }else if(isDraw){ 
-        puntos = [];
-        Trazados = [];
+        //Dibujar lápiz
+        puntos.length = 0;
         ctx.beginPath();
     }
+    toFront = true;
 }
 
 function mouseUp() {  
+    console.log(historial);
     if(isDragging){
-        for (var i = 0; i < poligonosRy.length; i++) {
-            poligonosRy[i].bool = false
+        for (var i = 0; i < historial.length; i++) {
+            historial[i].move = false;
+            historial[i].scale = false;
         }
-    }else if(isPaiting){ 
+    }else if(isPaiting){  
         historial[ptr] = {
             'tipo' : tipoFigura,
             'x1': temp_x[0],
             'y1': temp_y[0],
             'x2': temp_x[1],
             'y2': temp_y[1],
-            'color': color,
+            'colorContorno': colorC,
+            'colorRelleno': colorR,
+            'tamano': tamano,
             'lados': document.getElementById("lados").innerHTML,
             'move': false,
             'scale': false,
-            'fill': false,
+            'fill': !document.getElementById("ckeck_relleno").checked,
+            'front': toFront,
             'rotacion': 0
         }; 
-        ptr++;    
-        //ctx.closePath(); 
+        ptr++;     
     } else if(isDraw){
-        //Lapiz({'x2':mousePos.x, 'y2': mousePos.y});
-        //redibujarTrazados();
+        redibujarTrazados();
     }
     
     restartCanvas(ptr, historial);  
@@ -182,10 +210,14 @@ function mouseMove(evt) {
             'y1': temp_y[0],
             'x2': temp_x[1],
             'y2': temp_y[1],
-            'color': color,
+            'colorContorno': colorC,
+            'colorRelleno': colorR,
+            'tamano': tamano,
             'lados': document.getElementById("lados").innerHTML,
+            'fill': !document.getElementById("ckeck_relleno").checked,
             'move': false,
             'scale': false,
+            'front': toFront,
             'rotacion': 0
         });
             
@@ -200,79 +232,74 @@ function mouseMove(evt) {
         }  
         restartCanvas(ptr, historial);
     }if(isDraw){ 
-        Lapiz({'x1':mousePos.x, 'y1': mousePos.y});
-        historial[ptr] = {
-            'tipo' : tipoFigura,
-            'x1': mousePos.x, 
-            'y1': mousePos.y,
-            'x2': temp_x[1],
-            'y2': temp_y[1],
-            'color': color,
-            'lados': document.getElementById("lados").innerHTML,
-            'move': false,
-            'scale': false,
-            'rotacion': 0
-        }; 
-        ptr++; 
-        //restartCanvas(ptr, historial);
-        //ctx.lineTo(mousePos.x, mousePos.y);
-        //ctx.stroke();
-        /*Lapiz({'x2':mousePos.x, 'y2': mousePos.y});
-        historial[ptr] = {
-            'tipo' : tipoFigura,
-            'x1': temp_x[0],
-            'y1': temp_y[0],
-            'x2': temp_x[1],
-            'y2': temp_y[1],
-            'color': color,
-            'lados': document.getElementById("lados").innerHTML,
-            'move': false,
-            'scale': false,
-            'rotacion': 0
-        }; 
-        ptr++;  */  
+        //Moviendo el lapiz dibujando
+        var m = oMousePos(canvas, evt);
+        puntos.push(m);
+        ctx.lineWidth = tamano;
+        ctx.strokeStyle = colorR;
+        ctx.lineTo(m.x, m.y);
+        ctx.stroke();
     }
 }
 
-/***************** TRAZADOS **************** */
+
+//MANO ALZADA
+
 function reducirArray(n,elArray) {
     var nuevoArray = [];
     nuevoArray[0] = elArray[0];
     for (var i = 0; i < elArray.length; i++) {
-        if (i % n == 0) {
+      if (i % n == 0) {
         nuevoArray[nuevoArray.length] = elArray[i];
-        }
+      }
     }
     nuevoArray[nuevoArray.length - 1] = elArray[elArray.length - 1];
     Trazados.push(nuevoArray);
-}
-  
-function calcularPuntoDeControl(ry, a, b) {
+  }
+
+  function calcularPuntoDeControl(ry, a, b) {
     var pc = {}
     pc.x = (ry[a].x + ry[b].x) / 2;
     pc.y = (ry[a].y + ry[b].y) / 2;
     return pc;
-}
-  
-function alisarTrazado(ry) {
+  }
+
+  function alisarTrazado(ry) {
     if (ry.length > 1) {
       var ultimoPunto = ry.length - 1;
       ctx.beginPath();
+
+      
       ctx.moveTo(ry[0].x, ry[0].y);
       for (i = 1; i < ry.length - 2; i++) {
         var pc = calcularPuntoDeControl(ry, i, i + 1);
         ctx.quadraticCurveTo(ry[i].x, ry[i].y, pc.x, pc.y);
+        ctx.lineWidth = ry[i].tamano;
+        ctx.strokeStyle = ry[i].color;
       }
       ctx.quadraticCurveTo(ry[ultimoPunto - 1].x, ry[ultimoPunto - 1].y, ry[ultimoPunto].x, ry[ultimoPunto].y);
       ctx.stroke();
     }
-}
-  
-function redibujarTrazados(){
-    dibujar = false;
-    ctx.clearRect(0, 0, cw, ch);
+  }
+
+
+  function redibujarTrazados(){
+    isDraw = false;
     reducirArray(factorDeAlisamiento,puntos);
     for(var i = 0; i < Trazados.length; i++)
     alisarTrazado(Trazados[i]);
-}
-  
+  }
+
+  function oMousePos(c, evt) {
+    //var ClientRect = c.getBoundingClientRect();
+     
+    return { //objeto
+        //x: Math.round(evt.clientX - ClientRect.left),
+        //y: Math.round(evt.clientY - ClientRect.top)
+        x: evt.clientX,
+        y: evt.clientY,
+        color: colorR,
+        tamano: tamano
+    }
+  }
+

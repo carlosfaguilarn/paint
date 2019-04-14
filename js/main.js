@@ -1,5 +1,6 @@
 var c;
 var ctx;
+var lapiz = "lapiz";
 window.onkeypress = function(event){
     var lados = document.getElementById("lados"); 
     if (Number.isInteger(Number.parseInt(event.key))) {
@@ -13,10 +14,19 @@ window.onkeypress = function(event){
 
 window.onload = function() {  
     c = document.getElementById('canvas');
+    c.style.backgroundColor = 'white'; 
+    
+    var cw = c.width; 
+    var cx = cw / 2;
+    var ch = c.height; 
+    var cy = ch / 2;
+
     ctx = c.getContext('2d'); // gets reference to canvas context  
-    c.style.backgroundColor = 'white';
-    ctx = c.getContext('2d');
-    ctx.globalAlpha = 0.95;
+
+    ctx.translate(-83, -130);
+
+    //document.getElementById("ckeck_relleno").value = "checked";
+    
     /*Lapiz({
         'x1': 100,
         'y1': 100,

@@ -17,7 +17,7 @@
     <script src="js/archivo.js"></script>
     <script src="js/acciones.js"></script>
     <script src="js/figuras.js"></script>
-    <script src="js/seleccion.js"></script>
+    <script src="js/seleccion.js"></script> 
     <!--************************************** BOOTSTRAP ****************************************************-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <!-- bootstrap -->
@@ -27,8 +27,8 @@
     <div class="herramientas">
         <div class="pintar seccion">
             <div class="cont">
-                <a title="Herramienta de lápiz" onclick="lapiz();">   <img src="img/lapiz-con-goma.png" /></a>
-                <a title="Borrador"             onclick="seleccionarFigura('borrador');"><img src="img/goma.png" /></a>
+                <a title="Herramienta de lápiz" onclick="lapiz('lapiz');">   <img src="img/lapiz-con-goma.png" /></a>
+                <a title="Borrador"             onclick="lapiz('borrador')"><img src="img/goma.png" /></a>
                 <a title="Mover"                onclick="arrastrar();"><img src="img/move.png" /></a>
                 <a title="Escalar"              onclick="escalar();"><img src="img/escalar.png" /></a>
                 <a title="Rellenar"             onclick="rellenar();"><img src="img/bote.png" /></a>
@@ -37,13 +37,13 @@
         </div>
         <div class="tamaño seccion"> 
             <div class="cont">
-                <input type="range" name="edad" min="0" max="500" step="1" value="10" onchange="rango(value);">
-                <input type="number" min="0" max="500"  value="10" id="size"/>
+                <input type="range" name="edad" min="0" max="50" step="1" value="10" onchange="rango(value);">
+                <input type="number" min="0" max="50"  value="10" id="size"/>
             </div>
 
             <div class="pie">Tamaño</div>
         </div> 
-        <div class="figuras seccion">
+        <div class="seccion">
             <div class="cont">
                 <div class="shapes">
                     <a onclick="seleccionarFigura('linea');">    <img src="img/linea.png"    /></a>
@@ -51,26 +51,39 @@
                     <a onclick="seleccionarFigura('eclipse');">  <img src="img/eclipse.png"  /></a>
                     <a onclick="seleccionarFigura('poligonoRegular');"> <img src="img/poligono.png" /></a>
                     <a id="lados">5</a>
+
                 </div>
                 <div class="skins">
-                    <a class="float-left"  onclick="rotarFigura('derecha');"> <img src="img/rotar-derecha.png" /></a>
-                    <a class="float-right" onclick="rotarFigura('izquierda');"> <img src="img/rotar-izquierda.png" /></a> 
-                </div> 
+                    <a title="Rotar derecha" onclick="rotarFigura('derecha');">    <img class="flat-icon" src="img/rotate2.png" /></a>
+                    <a title="Rotar izquierda" onclick="rotarFigura('izquierda');">  <img class="flat-icon" src="img/rotate.png" /></a> 
+                    <a title="Traer al frente " onclick="enviar(true);">            <img class="flat-icon" src="img/front.png" /></a> 
+                    <a title="Enviar atrás "    onclick="enviar(false);">           <img class="flat-icon" src="img/back.png" /></a> 
+                </div>
             </div>
             <div class="pie">Figuras</div>
         </div> 
+        <div class="seccion">
+            <div class="cont">
+                <input class="color-input" type="color" id="colorContorno" onchange="colorContorno();" title="Mostrar color picker"/>
+                contorno <br>
+                <input class="color-input" type="color" id="colorRelleno" onchange="colorRelleno();"  title="Mostrar color picker"/>
+                relleno <br>
+                <input type="checkbox" id="ckeck_relleno" value="Relleno" checked> Sin relleno </input>
+            </div>
+            
+        </div>
         <div class="colors seccion">
             <div class="cont">
-                    <a onclick="changeColor('red');"><img src="img/colores/rojo.png" alt="" srcset=""></a>
-                    <a onclick="changeColor('blue');"><img src="img/colores/azul.png" alt="" srcset=""></a>
-                    <a onclick="changeColor('yellow');"><img src="img/colores/amarillo.png" alt="" srcset=""></a> 
-                    <a onclick="changeColor('orange');"><img src="img/colores/naranja.png" alt="" srcset=""></a>
-                    <a onclick="changeColor('green');"><img src="img/colores/verde.png" alt="" srcset=""></a>
-                    <a onclick="changeColor('rgb(243, 38, 157)');"><img src="img/colores/rosa.jpg" alt="" srcset=""></a> 
-                    <a onclick="changeColor('cyan');"><img src="img/colores/cyan.png" alt="" srcset=""></a>
-                    <a onclick="changeColor('purple');"><img src="img/colores/purpura.png" alt="" srcset=""></a>
-                    <a onclick="changeColor('black');"><img src="img/colores/negro.png" alt="" srcset=""></a> 
-                    <a onclick="changeColor('white');"><img src="img/colores/blanco.png" alt="" srcset=""></a> 
+                    <a onclick="changeColor('#ff0000');"><img src="img/colores/rojo.png" alt="" srcset=""></a>
+                    <a onclick="changeColor('#0000ff');"><img src="img/colores/azul.png" alt="" srcset=""></a>
+                    <a onclick="changeColor('#ffff00');"><img src="img/colores/amarillo.png" alt="" srcset=""></a> 
+                    <a onclick="changeColor('#ffa500');"><img src="img/colores/naranja.png" alt="" srcset=""></a>
+                    <a onclick="changeColor('#00ff00');"><img src="img/colores/verde.png" alt="" srcset=""></a>
+                    <a onclick="changeColor('#fd4665');"><img src="img/colores/rosa.jpg" alt="" srcset=""></a> 
+                    <a onclick="changeColor('#00ffff');"><img src="img/colores/cyan.png" alt="" srcset=""></a>
+                    <a onclick="changeColor('#800080');"><img src="img/colores/purpura.png" alt="" srcset=""></a>
+                    <a onclick="changeColor('#000000');"><img src="img/colores/negro.png" alt="" srcset=""></a> 
+                    <a onclick="changeColor('#ffffff');"><img src="img/colores/blanco.png" alt="" srcset=""></a> 
 
                 <input type="color" id="colores" onchange="scolor();" title="Mostrar color picker"/>
             </div> 
@@ -108,7 +121,7 @@
     
     <center>  
         <div class="canvas">
-            <canvas width="1200" height="500" id="canvas"  onmousedown="mouseDown(event);" onmousemove="mouseMove(event);" onmouseup="mouseUp(event);" onmouseout="mouseUp(event);"></canvas></td> 
+            <canvas width="1200" height="500" id="canvas"  onmousedown="mouseDown(event);" onmousemove="mouseMove(event);" onmouseup="mouseUp(event);"></canvas></td> 
         </div> 
     </center> 
 

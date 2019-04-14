@@ -41,12 +41,32 @@ function borrador(){
     document.getElementById("colores").setAttribute("disabled", "");
 }
 //
-function lapiz(){ 
+function lapiz(es_lapiz){ 
     mode = "dibujando"; 
-    document.getElementById("canvas").style.cursor = "url('img/lapiz.png'), default";
+    lapiz = es_lapiz;
+
+    if(es_lapiz == 'lapiz'){
+        document.getElementById("canvas").style.cursor = "url('img/lapiz.png'), default";
+        color_lapiz = "#000000"; 
+    }else{
+        document.getElementById("canvas").style.cursor = "url('img/borrador.png'), default";
+        color_lapiz = "#FFFFFF";
+    }
+    console.log(es_lapiz);
+    console.log(color_lapiz);        
+
     isDragging = false;
     isPaiting = false;
     isEscalating = false;
     habilitarLapiz = false;
     tipoFigura = 'lapiz'; 
+}
+//
+function cambiarRelleno(){
+
+} 
+function enviar(over){
+    isSendingFrontBack = true;
+    toFront = over;
+    console.log(isSendingFrontBack, toFront);
 }
